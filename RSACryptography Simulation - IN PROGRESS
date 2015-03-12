@@ -1,0 +1,58 @@
+import java.io.*;
+import java.util.Scanner;
+import java.lang.Math;
+
+public class rsacryptography{
+		static long p;
+		static long q;
+		static long n;
+
+	public static void keyGeneration(double publicKey){
+		p = 91193;
+		q = 93719;
+		n = p*q;
+		long psin = (p-1)*(q-1);
+		double d = Math.pow(publicKey,-1)%psin;
+	}
+
+	public static String encryption(String encryption, double publicKey){
+		String encrypted = "";
+		for(int i = 0; i < encryption.length(); i++){
+			double letter = encryption.charAt(i);
+			char encryptedLetter = (char)((Math.pow(letter,publicKey))%n);
+			encrypted = encrypted + encryptedLetter;
+		}
+		System.out.println(encrypted);
+		return encrypted;
+	}
+
+	public static String decryption(String encryptedString, double privateKey){
+		String decrypted = "";
+		for(int i = 0; i < encryptedString.length(); i++){
+			double encryptedLetter = encryptedString.charAt(i);
+			System.out.println((char)(Math.pow(encryptedLetter,privateKey))%n);
+			char decryptedLetter = (char)((Math.pow(encryptedLetter,privateKey))%n);
+			System.out.println(decryptedLetter);
+			decrypted = decrypted + decryptedLetter;
+		}
+		return decrypted;
+	}
+
+	public static void main(String args[]){
+		System.out.println("Please type a string that you want to be encrypted.");
+		Scanner scanned = new Scanner(System.in);
+		String encryption = scanned.nextLine();
+		System.out.println("Please enter your public key");
+		double publicKey = Double.parseDouble(scanned.nextLine());
+		System.out.println(publicKey);
+		keyGeneration(publicKey);
+		String encryptedString = encryption(encryption,publicKey);
+		System.out.println(encryptedString);
+		System.out.println("To decode the encryption please enter your private key");
+		double privateKey = Double.parseDouble(scanned.nextLine());
+		String decryptedString = decryption(encryptedString,privateKey);
+		System.out.println("Your decoded string is:" + decryptedString);
+	}
+}
+
+
