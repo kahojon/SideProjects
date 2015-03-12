@@ -1,0 +1,29 @@
+import java.util.Scanner;
+public class HumanPlayer extends Player
+{
+    private static Scanner reader = new Scanner(System.in);
+
+    public Card playLegalMove(CardPile currentTrick)
+    {
+	boolean isLegal = false;
+
+	while (!isLegal)
+	{
+	    System.out.println("Here are the cards in the current trick: " + currentTrick);
+	    System.out.println("Here are the cards you have: " + this.hand);
+	    System.out.println("Enter a number to select:");
+	    int choice = reader.nextInt();
+
+	    //check to see if the player has any cards of the leading suit
+	    Card leading = currentTrick.peak(0);
+	    Card playerChoice = this.hand.peak(choice);
+
+	    if (playerChoice != null && (leading == null || leading.getSuit() == playerChoice.getSuit() || !this.hand.containsSuit(leading.getSuit())))
+	    {
+		return this.hand.removeCard(choice);
+	    }
+	}
+
+	return null;
+    }
+}
