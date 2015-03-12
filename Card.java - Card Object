@@ -1,0 +1,45 @@
+//Code Written By: Jonathan Leung
+
+public class Card{
+  private Suit suit; //enum of type Suit representing what suit the Card should have
+  private Value value; //enum of type Value representing what value the Card should have
+  
+  //Constructor: Initializes suit and value properties of object
+  public Card(Suit theSuit, Value theValue)
+  {
+    this.suit = theSuit;
+    this.value = theValue;
+  }
+  
+  //Method returns the suit property of a specific card
+  public Suit getSuit()
+  {
+    return this.suit;
+  }
+  
+  //Method returns the value property of a specific card
+  public Value getValue()
+  {
+    return this.value;
+  }
+  
+  //Method returns a string that indicates the suit and value of a specific card
+  public String toString()
+  {
+    String cardString = (""+ this.value + " OF " + this.suit);
+    return cardString;
+  }
+  
+  //Method compares this card to an inputted card and outputs a boolean that shows whether if they are equal
+  public boolean equals(Card other)
+  {
+    if (this.suit == other.getSuit() && this.value == other.getValue())
+    { 
+      return true;
+    }
+    else 
+    {
+      return false;
+    }
+  }
+}
