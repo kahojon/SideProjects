@@ -1,0 +1,168 @@
+//Code Written By: Jonathan Leung
+import java.util.Random;
+public class CardPile{
+  private Card[] cards; //Creates an array to store cards
+  private int numCards; //Keeps track of the number of cards in cards array
+  private static Random r = new Random(1); //Allows the generation of random numbers
+  
+  //Constructor: Sets cards array to size of 52 and sets numCards property to 0
+  public CardPile()
+  {
+    this.cards = new Card[52];
+    this.numCards = 0;
+  }
+  
+  //Adds cards to the first spot in array that is null
+  public void addToBottom(Card c)
+  {
+    if(this.numCards < 52) //Places card in index of array that is equal to numCards because that spot in array will 
+                           //always be null
+    { 
+      this.cards[this.numCards] = c;
+      this.numCards++;
+    } 
+    }
+  
+  //Removes a card, equates the spot of cards of array to null, shifts cards up to fill null spot, returns removed card
+  public Card removeCard(int index)
+  {
+    if (this.cards[index] == null) //Returns null if specified card in array is null. Nothing to remove.
+    {
+      return null;
+    }
+    Card c = this.cards[index]; //Stores specified card that will be removed into Card c
+    if (0 <= index && index < this.numCards) //Executes if index is between 0 and the number of cards in the cardpile
+    {
+    for (int i = index; i < this.numCards-1; i++)
+    {
+      this.cards[i] = this.cards[i+1]; //Shifts cards up one slot in the cards array
+    }
+    this.cards[this.numCards-1] = null; //Shifts null value to a slot below all the existing cards in the cards array
+    this.numCards--;
+    }
+    else //If index falls out of the parameters of the if statement then method will return null
+    {
+      return null;
+    }
+    return c; //Returns removed card
+  }
+  
+  //Checks if the deck is empty
+ public boolean isEmpty()
+  {
+    if (this.numCards == 0) //If the number of cards equals zero it returns true for the cardpile being empty
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+  
+  //Empties the deck by equating all the slots in the array to null
+  public void clear() 
+  {
+    for (int i = 0; i < this.numCards; i++)
+    {
+      this.cards[i] = null;
+    }
+    this.numCards = 0; //Sets number of cards to be equal to zero
+  }
+  
+  //Returns the number of cards in the cardpile
+  public int getNumCards()
+  {
+    return this.numCards;
+  }
+  
+  //Returns the specific card in the cardpile that is in the slot indicated by the index
+  Card peak (int i)
+  {
+    if ( i > 51) //If index is out of range then the method returns null
+    { 
+      return null;
+    }
+    return this.cards[i];
+  }
+  
+  //Checks whether if the cardpile contains the inputted card
+  public boolean containsCard (Card c)
+  {
+    for (int i = 0; i < this.numCards; i++)
+    {
+      if(this.cards[i] == null || c == null) //If either tested cards are null then the method returns false
+      {
+        return false;
+      }
+      if (this.cards[i].equals(c)) //Calls the equals method in the card class to compare the two cards. If they match
+                                   //the method returns true
+      {
+        return true;
+      }
+    }
+    return false; //If they do not match, the method returns false
+  }
+  
+  //Checks whether if the cardpile contains a specified suit
+  public boolean containsSuit (Suit suit)
+  {
+    for (int i = 0; i < this.numCards; i++)
+    {
+      if(this.cards[i].getSuit() == null || suit == null) //If either tested suit properties are null then the method 
+                                                          //returns false
+      {
+        return false;
+      }
+      if (this.cards[i].getSuit() == suit) //If the two tested suits equal each other, the method returns true
+      {
+        return true;
+      }
+    }
+    return false; //If none of the cards in the cardpile have suits that equal the specified suit, the method returns
+                  //false
+  }
+  
+  //Prints the entire cardpile
+  public String toString()
+  {
+    String printedString = "";
+    for (int i = 0; i < this.numCards; i++)
+    {
+      
+     printedString = printedString +i+". " + this.cards[i].toString() + "\n";
+      
+    }
+    return printedString;
+  }
+  
+  private void shuffle()
+  {
+    for (int s = 0; s < 100000; s++) //Loop runs 100000 times
+    {
+      int i = r.nextInt(52); //Generates integer from 0 to 51
+      int j = r.nextInt(52);
+      Card k = new Card(this.cards[i].getSuit(),this.cards[i].getValue()); //Equates cards that will be switched to k,l
+      Card l = new Card(this.cards[j].getSuit(),this.cards[j].getValue());
+      this.cards[i] = l; //Card at index i will be now equal to card that was in index j
+      this.cards[j] = k; //Card at index j will be now equal to card that was in index i
+      
+    }
+    }
+
+//Fills cardpile with 52 cards of all possible combinations of suits and values and shuffles the deck
+public static CardPile makeFullDeck()
+{
+  CardPile deckPile = new CardPile();
+  for (Suit s: Suit.values()) 
+  {
+    for (Value v: Value.values())
+    {
+      deckPile.addToBottom(new Card(s,v));
+    }
+  }
+  deckPile.shuffle();
+  return deckPile;
+}
+}
+    
